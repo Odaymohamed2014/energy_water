@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<title>خريطه  الطاقه النظيفة </title>
+<link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+   <link rel="stylesheet" href="style.css">
+<script src="https://js.arcgis.com/4.26/"></script>
+<style>
+  html,body,#map{height:100%;margin:0;}
+  #title{position:absolute;top:5px;left:50%;transform:translateX(-50%);
+    background:white;padding:5px 10px;border-radius:10px;font-size:16px;}
+  #info{position:absolute;bottom:5px;right:5px;background:white;padding:3px 6px;border-radius:6px;font-size:11px;}
+</style>
+</head>
+<body>
+     <header>
+        <h2>خريطه  الطاقه النظيفة </h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li></li>
+
+                 <li><a href=" energy_saving.html"> ترشيد استهلاك الطاقة</a></li>
+                <li><a href="water_saving.html">ترشيد استهلاك الماء</a></li>
+                  <li><a href="ideas.html"> شاركنا بافكارك</a></li>
+             <li><a href="videos.html"> فيديوهات تعليميه   </a></li>
+             <li><a href="Mineral_wealth.html">   الثروه المعدنيه ومصادر الطاقه  </a></li>   
+ <li><a href="map.html"> خريطه  الطاقه النظيفة </a></li>            </ul>        </nav>
+    </header>
+
+<div id="map"></div>
+<div id="info">المصدر: وزارة الكهرباء </div>
+
+<script>
+require(["esri/Map","esri/views/MapView","esri/Graphic","esri/layers/GraphicsLayer"],function(Map,MapView,Graphic,GraphicsLayer){
+  const map=new Map({basemap:"osm"});
+  const view=new MapView({container:"map",map:map,center:[31,27],zoom:6});
+  const layer=new GraphicsLayer();map.add(layer);
+
+  const sites=[
+    {name:" بنبان - أسوان",x:32.84,y:24.04,desc:"مجموعة من المحطات الشمسية تضم 32 محطة شمسية بقدرة تصل إلى 1465 ميجاوات دخلت منها حتى الآن 17 محطة الخدمة بإجمالي 830 ميجاوات، فيما مستهدف دخول 15 محطة أخرى للتشغيل الفعلي خلال عام 2019",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Benban_Solar_Park.jpg/500px-Benban_Solar_Park.jpg"},
+    {name:"الزعفرانة - البحر الأحمر",x:32.66,y:29.12,desc:"مزرعة رياح الزعفرانه هيا محطة إنتاج كهرباء من الرياح و فى مدينة رأس غارب والتابعة لمحافظة البحر الأحمر. وتعد من أوائل المزارع اللى اتنشأت لإنتاج الطاقة من الرياح فى مصر، و مساحتها 120 كيلو متر مربع، وتنتج ثلث ما ينتجه السد العالى، و أنشأت على 8 مراحل بداية من سنة 2000 لحد 2010، وتعد ثانى اكبر مزرعه فى شرق إفريقيا بعد مزرعة رياح جبل الزيت اللى تنتج 580 ميجا وات",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Wind_turbine_at_Zaafarana_by_Hatem_Moushir_11.JPG/330px-Wind_turbine_at_Zaafarana_by_Hatem_Moushir_11.JPG"},
+    {name:" جبل الزيت - الغردقة",x:33.66,y:27.6,desc:"مزرعة رياح جبل الزيت هي محطة إنتاج الكهرباء بواسطة طاقة الرياح وتقع على بعد 350 كيلو من طريق القطامية-العين السخنة الواصل إلى مدينة الغردقة بمحاذاة الجانب الغربى للطريق الساحلى المؤدي الغردقة، عند الكيلو 118 بمنطقة جبل الزيت بعد مدينة رأس غارب. مساحة المحطة 100 كيلو متر مربع وتضم 300 توربينة رياح.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Gabal_El-Zayt_Wind_farm.png/500px-Gabal_El-Zayt_Wind_farm.png"},
+    {name:" كوم أمبو - أسوان",x:32.89,y:24.47,desc:"محطة كوم أمبو للطاقة الشمسية هي محطة إنتاج كهربا بواسطة ألواح كهروضوئية وسجلت تكلفة إنشاء المحطة 200 مليون دولار. وتمت أعمال تمويل وتطوير المحطة بناء توقيع شركة أكوا باور ومقرها المملكة العربية السعودية اتفاقية إتفاقية شراء الطاقة شمسية بقدرة 200 ميجاوات مع الحكومة المصرية. حيث قامت شركة أكوا بتمويل وتطوير وبناء وتشغيل محطة كوم أمبو للطاقة الشمسية الكهروضوئية.",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkiy6lyifcjfHhDAFaSINWQsh_QjVtSXpDVQ&s"}
+  ];
+
+  sites.forEach(s=>{
+    const point={type:"point",longitude:s.x,latitude:s.y};
+    const symbol={type:"simple-marker",color:"red", size: 12};
+    const popup={title:s.name,content:`${s.desc}<br><br><img src='${s.img}' width='200' style='border-radius:8px;'>`};
+    layer.add(new Graphic({geometry:point,symbol:symbol,popupTemplate:popup}));
+  });
+});
+</script>
+</body>
+</html>

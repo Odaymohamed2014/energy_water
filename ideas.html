@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شاركنا بارائك</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>شاركنا بارائك</h1>
+         <nav>
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li></li>
+
+                 <li><a href=" energy_saving.html"> ترشيد استهلاك الطاقة</a></li>
+                <li><a href="water_saving.html">ترشيد استهلاك الماء</a></li>
+                  <li><a href="ideas.html"> شاركنا بافكارك</a></li>
+             <li><a href="videos.html"> فيديوهات تعليميه   </a></li>
+                               <li><a href="Mineral_wealth.html">   الثروه المعدنيه ومصادر الطاقه  </a></li>   
+<li><a href="Mineral_wealth.html">   الثوره المعدنيه ومصادر الطاقه  </a></li>   
+ <li><a href="map.html"> خريطه  الطاقه النظيفة </a></li>            </ul>
+            </ul>
+
+        </nav>    </header>
+
+    <section id="about">
+        <h1> شاركنا رأيك للحفاظ على البيئة </h1>
+
+<input id="name" placeholder="الاسم"><br>
+<input id="email" placeholder="الإيميل"><br>
+<input id="phone" placeholder="رقم التليفون"><br>
+<textarea id="opinion" placeholder="رأيك للحفاظ على البيئة"></textarea><br>
+<button onclick="send()">إرسال</button>
+
+<div id="messages"><h3> آراء المشاركين:</h3></div>
+
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCWUIXS9Ubl6YxwOPntc8Dg8vKJRSc2Uko",
+  authDomain: "energy-95cbf.firebaseapp.com",
+  projectId: "energy-95cbf",
+  storageBucket: "energy-95cbf.firebasestorage.app",
+  messagingSenderId: "782643446847",
+  appId: "1:782643446847:web:1067d6999ee872b5c8a48a",
+  measurementId: "G-9Z6JTCRT4Q"
+};
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const name = document.getElementById("name");
+  const email = document.getElementById("email");
+  const phone = document.getElementById("phone");
+  const opinion = document.getElementById("opinion");
+  const messages = document.getElementById("messages");
+
+
+  window.send = function() {
+    if(name.value && opinion.value){
+      push(ref(db, "opinions"), {
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+        opinion: opinion.value
+      });
+      name.value = email.value = phone.value = opinion.value = "";
+      alert("تم إرسال رأيك بنجاح ");
+    } else {
+      alert("من فضلك أدخل الاسم والرأي");
+    }
+  }
+
+
+  onValue(ref(db, "opinions"), (snapshot) => {
+    messages.innerHTML = "<h3>آراء المشاركين:</h3>";
+    snapshot.forEach(child => {
+      let data = child.val();
+      messages.innerHTML += `<p><b>${data.name}:</b> ${data.opinion}</p>`;
+    });
+  });
+</script>
+    </section>
+
+
+
+    <footer>      
+        <p>&copy; 2025 جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>
